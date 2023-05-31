@@ -13,11 +13,11 @@ class CourseData(object):
 
 class_inputs = []
 
-
+# While loop used to process user input 
 keep_going = 0
 while keep_going == 0:
 
-    user_input = input("Please Enter the class you want to track \nPlease make sure that you enter the class code in all CAPS for example ENGL101\n")
+    user_input = input("Please Enter the class you want to track \nMake sure that you enter the class code in all CAPS for example ENGL101\n")
     user_section_input = input("Please Enter the section number for the class you want to track\n")
     second_user_input = input("Do you want to enter another class \n---> yes or no?\n")
     
@@ -28,14 +28,12 @@ while keep_going == 0:
     if second_user_input !=  "yes":
         keep_going = 1
 
+# Function is used to process the user data that was entered and print the outputs
 def print_data():
 
 	# Processes each CourseData Object
 	for course_data in class_inputs:
-	
-
-		print(course_data.class_name + '-' + course_data.id)
-        
+		# Pulls the data using a API
 		data = requests.get('https://api.umd.io/v1/courses/sections/' + course_data.class_name + '-' + course_data.id).json()
 
 
@@ -46,12 +44,14 @@ def print_data():
 			if(len(section_data.get('instructors')) == 0):
 				print("Instructor: TBA")
 			else:
-				print("Instructor:" + section_data.get('instructors'))
+				print(section_data.get('instructors'))
 
 			# Prints out the seat count
 			print("Seats left:" + section_data.get('open_seats'))
 
 
 print_data()
+
+input("Enter Anything to close\n")
 					
 	
