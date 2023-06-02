@@ -108,7 +108,7 @@ while True:
 				course_data.time = time.time()
 
 
-			#If (course is not processed and have seats)
+			#If (course is not processed and have seats left)
 			if course_data.processed == 0 and int(section_data.get('open_seats')) > 0:
 
 				course_data.processed = 1
