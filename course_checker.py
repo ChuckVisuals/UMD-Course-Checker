@@ -36,9 +36,9 @@ seat_count = 0
 
 # While loop used to process user input 
 keep_going = 0
+user_number = input("Please enter your number\n")
 while keep_going == 0:
     
-    user_number = input("Please enter your number\n")
     user_input = input("Please Enter the class you want to track \nMake sure that you enter the class code in all CAPS for example ENGL101\n\n")
     user_section_input = input("Please Enter the section number for the class you want to track\n\n")
     second_user_input = input("Do you want to enter another class \n---> yes or no?\n\n")
@@ -76,6 +76,7 @@ def print_data():
 
 print_data()
 
+# Start Message to check if the class if available 
 message = client.messages.create(
 				body="You have successfully set up your data in the script, you will receive a message when your class has seats available",
 				from_="+18334320310",
