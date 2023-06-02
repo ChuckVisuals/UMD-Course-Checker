@@ -2,15 +2,18 @@ import requests
 from twilio.rest import Client
 import time
 import json
+import time 
 
 # Class Object used to store the data for the course data
 class CourseData(object):
 	id = ""
 	class_name = ""
 
-	def __init__ (self,id, class_name):
+	def __init__ (self,id, class_name,time):
 		self.id = id
 		self.class_name = class_name
+		self.time = time
+		self.processed = 0
 
  
 
@@ -43,13 +46,17 @@ while keep_going == 0:
     user_section_input = input("Please Enter the section number for the class you want to track\n\n")
     second_user_input = input("Do you want to enter another class \n---> yes or no?\n\n")
     
+	#Stores the time when the object was created
+    start_time = time.time() 
     
-    course_data = CourseData(user_section_input,user_input)
+    course_data = CourseData(user_section_input,user_input, start_time)
 
     class_inputs.append(course_data)
 
     if second_user_input !=  "yes":
         keep_going = 1
+	
+
 
 # Function is used to process the user data that was entered and print the outputs
 def print_data():
@@ -60,7 +67,7 @@ def print_data():
 		data = requests.get('https://api.umd.io/v1/courses/sections/' + course_data.class_name + '-' + course_data.id).json()
 
 
-		# Processes and print out the course data
+		# For loop used to access the data in the json file returned by the API
 		for section_data in data:
 
 			# Checks to see if the instructor is a TBA
@@ -87,13 +94,24 @@ message = client.messages.create(
 # the user
 while True:
 
+	# Processes each CourseData Object
 	for course_data in class_inputs:
 		# Pulls the data using a API
 		data = requests.get('https://api.umd.io/v1/courses/sections/' + course_data.class_name + '-' + course_data.id).json()
 
-		# Check to see if theres seats open for the course
+		# For loop used to access the data in the json file returned by the API
 		for section_data in data:
-			if int(section_data.get('open_seats')) > 0:
+			
+			# Checks the time and updates if course has been processed or not
+			if time.time() - course_data.time > (86400/2):
+				course_data = 0
+				course_data.time = time.time()
+
+
+			#If (course is not processed and have seats)
+			if course_data.processed == 0 and int(section_data.get('open_seats')) > 0:
+
+				course_data.processed = 1
 
 				message = client.messages.create(
 				body="Theres a seat available for " + course_data.class_name + " hurry and sign up!!!",
@@ -102,7 +120,7 @@ while True:
 				)
 
 				# Waits a day before checking again
-				time.sleep(86400)
+				# time.sleep(86400)
 
 
 input("Enter Anything to close\n")
