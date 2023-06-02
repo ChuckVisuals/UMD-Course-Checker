@@ -103,7 +103,7 @@ while True:
 		for section_data in data:
 			
 			# Checks the time and updates if course has been processed or not
-			if time.time() - course_data.mytime > (60):
+			if time.time() - course_data.mytime > (86400):
 				course_data.processed = 0
 				new_time = time.time()
 				course_data.mytime = new_time
