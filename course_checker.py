@@ -9,10 +9,10 @@ class CourseData(object):
 	id = ""
 	class_name = ""
 
-	def __init__ (self,id, class_name,time):
+	def __init__ (self,id, class_name,mytime):
 		self.id = id
 		self.class_name = class_name
-		self.time = time
+		self.mytime = mytime
 		self.processed = 0
 
  
@@ -103,9 +103,10 @@ while True:
 		for section_data in data:
 			
 			# Checks the time and updates if course has been processed or not
-			if time.time() - course_data.time > (86400/2):
-				course_data = 0
-				course_data.time = time.time()
+			if time.time() - course_data.mytime > (60):
+				course_data.processed = 0
+				new_time = time.time()
+				course_data.mytime = new_time
 
 
 			#If (course is not processed and have seats left)
