@@ -14,6 +14,7 @@ class CourseData(object):
 		self.class_name = class_name
 		self.mytime = mytime
 		self.processed = 0
+		self.seat_open = False
 
  
 
@@ -103,14 +104,14 @@ while True:
 		for section_data in data:
 			
 			# Checks the time and updates if course has been processed or not
-			if time.time() - course_data.mytime > (86400):
+			if time.time() - course_data.mytime > (1):
 				course_data.processed = 0
 				new_time = time.time()
 				course_data.mytime = new_time
 
 
 			#If (course is not processed and have seats left)
-			if course_data.processed == 0 and int(section_data.get('open_seats')) > 0:
+			if course_data.processed == 0 and int(section_data.get('open_seats')) > 0 and course_data.seat_open == False:
 
 				course_data.processed = 1
 
@@ -119,7 +120,7 @@ while True:
 				from_="+18334320310",
 				to="+1" + user_number
 				)
-
+				course_data.seat_open = True
 				# Waits a day before checking again
 				# time.sleep(86400)
 
