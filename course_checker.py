@@ -85,7 +85,7 @@ def print_data():
 print_data()
 
 # Start Message to check if the class if available 
-message = client.messages.create(
+message = client.messages.create (
 				body="You have successfully set up your data in the script, you will receive a message when your class has seats available",
 				from_="+18334320310",
 				to="+1" + user_number
