@@ -19,7 +19,7 @@ class CourseData(object):
  
 
 # Specify the path to your JSON file
-file_path = r'C:\Users\first\Desktop\New folder\UMD-Course-Checker\keys.json'
+file_path = r'C:\Users\first\Desktop\CodeBase\UMD-Course-Checker\keys.json'
 
 # Open the JSON file and load its contents
 with open(file_path, 'r') as file:
