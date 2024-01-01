@@ -9,7 +9,7 @@ class CourseData(object):
 	id = ""
 	class_name = ""
 
-	def __init__ (self,id, class_name,mytime):
+	def __init__ (self, id, class_name, mytime):
 		self.id = id
 		self.class_name = class_name
 		self.mytime = mytime
