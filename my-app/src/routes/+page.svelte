@@ -7,6 +7,7 @@
   let class_name = "";
   let section = "";
   let isError = false;
+  let success = false;
   let class_array = [];
 
   function add_class(){
@@ -25,7 +26,7 @@
       );
       let data = response.data;
 
-      if (data) {
+      if (data[0]) {
           form_model = false
           isError = false
           console.log(data[0])
@@ -43,12 +44,15 @@
  
       } else {
         console.error("No data received from the API");
+        isError = true;
       }
     } catch (error) {
       isError = true;
       console.error("Error fetching data:", error.message);
-      
-    }
+      setTimeout(() => {
+      isError = false; // Reset isError state after a delay
+        }, 3000); // Adjust the delay (in milliseconds) based on the fade-out duration
+      }
     console.log(class_array)
   }
 
@@ -58,6 +62,27 @@
   }
   $: class_array; // Ensure reactivity
 </script>
+
+<style>
+  .alert-error {
+    animation: fadeOut 3s ease-in-out; /* Set the duration of the fade-out animation */
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+
+    to {
+      opacity: 0;
+    }
+  }
+  .popup-container {
+    position: fixed;
+    top: 0%;
+    left: 0%;
+  }
+</style>
 
 <div class="navbar bg-base-100">
   <div class="flex-1">
@@ -95,24 +120,26 @@
 
 
 {#if form_model}
-<div class="w-screen h-screen fixed top-0 left-0 grid place-items-center backdrop-blur-lg bg-black/20">
-  <div class="flex justify-center gap-4 flex-col bg-base-100 p-8 rounded-xl shadow-xl">
+<div class="popup-container">
+  <div class="w-screen h-screen fixed top-0 left-0 grid place-items-center backdrop-blur-lg bg-black/20 ">
+    <div class="flex justify-center gap-4 flex-col bg-base-100 p-8 rounded-xl shadow-xl">
 
-    <input type="text" placeholder="Class Name" bind:value={class_name}
-        class="input input-bordered input-primary w-full max-w-xs px-4 py-2 ">
+      <input type="text" placeholder="Class Name" bind:value={class_name}
+          class="input input-bordered input-primary w-full max-w-xs px-4 py-2 ">
+          
+      <input type="text" placeholder="Section Number" bind:value={section}
+          class="input input-bordered input-primary w-full max-w-xs px-4 py-2">
+
+      <button class="btn bg-indigo-500 hover:bg-indigo-700 text-lg" on:click={add_class}> Submit </button>
+      <button class="btn bg-indigo-500 hover:bg-indigo-700 text-lg" on:click={() => form_model = !form_model}> Go Back </button>
         
-    <input type="text" placeholder="Section Number" bind:value={section}
-        class="input input-bordered input-primary w-full max-w-xs px-4 py-2">
-
-    <button class="btn bg-indigo-500 hover:bg-indigo-700 text-lg" on:click={add_class}> Submit </button>
-    <button class="btn bg-indigo-500 hover:bg-indigo-700 text-lg" on:click={() => form_model = !form_model}> Go Back </button>
-      
-  </div>
-  {#if isError}
-    <div role="alert" class="alert alert-error ">
-      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-      <span>Error! Class Doesn't Exist</span>
     </div>
-    {/if}
+    {#if isError}
+      <div role="alert" class="alert alert-error flex justify-center max-w-md absolute inset-x-50 bottom-20">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        <span>Error! Class Doesn't Exist</span>
+      </div>
+      {/if}
+  </div>
 </div>
 {/if}
