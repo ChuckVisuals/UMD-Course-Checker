@@ -1,12 +1,12 @@
 <script>
-    import "../app.css";
-    import "./course_checker.svelte";
-    import axios from 'axios';
+  import "../app.css";
+  import "./course_checker.svelte";
+  import axios from 'axios';
 
-    let form_model = false;
-    let class_name = "";
-    let section = "";
-    let class_array = [];
+  let form_model = false;
+  let class_name = "";
+  let section = "";
+  let class_array = [];
 
     function add_class(){
       console.log(class_name)
