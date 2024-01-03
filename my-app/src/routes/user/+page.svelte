@@ -70,6 +70,7 @@
           },
         ]);
         form_model = false;
+        user_found = true;
         if (error) {
           console.error("Error adding data to Supabase:", error.message);
         } else {
@@ -157,9 +158,11 @@
   <div class="p-14 text-2xl">
     Welcome back {name}
   </div>
-  <div class="px-14 py-14 text-2xl">
-    Current Email: {email}
-  </div>
+  {#if user_found}
+    <div class="px-14 py-14 text-2xl">
+      Current Email: {email}
+    </div>
+  {/if}
 
   {#if !user_found}
     <div class="py-52 px-20 flex justify-center text-xl">
