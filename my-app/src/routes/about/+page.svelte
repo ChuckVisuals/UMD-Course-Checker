@@ -1,26 +1,3 @@
-<script>
-  fetch("https://api.umd.io/v1/courses")
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      // Assuming the response contains an array of course objects
-      const courses = data.courses;
-
-      // Log course names to the console
-      courses.forEach((course) => {
-        console.log("Course Name:", course.course_id, course.name);
-      });
-    })
-    .catch((error) => {
-      // Handle errors
-      console.error("Error:", error);
-    });
-</script>
-
 <body class="overflow-hidden">
   <div class="navbar bg-base-100 z-100">
     <div class="navbar-start">

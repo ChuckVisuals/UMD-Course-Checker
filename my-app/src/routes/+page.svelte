@@ -71,7 +71,7 @@
       const { data, error } = await supabase.from("data").insert([
         {
           uniqueKey: uniqueKey,
-          class_name: class_name,
+          class_name: class_name.toUpperCase(),
           section: section,
           api_link: link,
         },
@@ -129,9 +129,25 @@
   }
 
   // Function to remove a class from the class_array
-  function removeClass(index) {
+  async function removeClass(index, class_info) {
+    const { data, error } = await supabase
+      .from("data")
+      .delete()
+      .eq("class_name", class_info.course.toUpperCase())
+      .eq("section", class_info.number)
+      .eq("uniqueKey", uniqueKey);
+    console.log(class_info.course);
+    console.log(class_info.number);
+    console.log(uniqueKey);
+
+    if (error) {
+      console.error("Error deleting from Supabase:", error.message);
+      return;
+    }
+
     class_array.splice(index, 1);
     class_array = [...class_array];
+    console.log(class_info);
   }
   $: class_array; // Ensure reactivity
 </script>
@@ -215,7 +231,11 @@
           >
           <td>{classData.section_id}</td>
           <td>{classData.open_seats}</td>
-          <td><button on:click={() => removeClass(index)}>Remove</button></td>
+          <td
+            ><button on:click={() => removeClass(index, classData)}
+              >Remove</button
+            ></td
+          >
         </tr>
       {/each}
     </tbody>
