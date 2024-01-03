@@ -2,28 +2,101 @@
   import "../app.css";
   import "./course_checker.svelte";
   import axios from "axios";
+  import { v4 as uuidv4 } from "uuid";
+  import { createClient } from "@supabase/supabase-js";
+  import { onMount } from "svelte";
+
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
   let form_model = false;
   let class_name = "";
   let section = "";
   let isError = false;
-  let success = false;
   let class_array = [];
+  let apiLinks = [];
 
-  function add_class() {
+  //local storage code
+  let uniqueKey;
+  console.log("here");
+
+  if (typeof localStorage !== "undefined") {
+    // Check if localStorage is defined (not in SSR)
+    uniqueKey = JSON.parse(localStorage.getItem("uniqueKey"));
+
+    if (!uniqueKey) {
+      uniqueKey = uuidv4();
+      localStorage.setItem("uniqueKey", JSON.stringify(uniqueKey));
+    }
+    console.log(uniqueKey);
+  } else {
+    // Handle the case when localStorage is not available (SSR)
+    console.warn(
+      "localStorage is not available in this environment (probably SSR)."
+    );
+  }
+
+  //updates the table from the data based on device
+  onMount(async () => {
+    if (uniqueKey) {
+      // Fetch all rows with the given uniqueKey
+      const { data, error } = await supabase
+        .from("data")
+        .select("api_link")
+        .eq("uniqueKey", uniqueKey);
+
+      if (error) {
+        console.error("Error fetching API links:", error.message);
+      } else {
+        // Extract API links from the data
+        apiLinks = data.map((row) => row.api_link);
+      }
+    }
+    console.log(apiLinks);
+    for (const apiLink of apiLinks) {
+      await printData(apiLink);
+    }
+  });
+
+  //supabase db code
+  async function add_class() {
     console.log(class_name);
     console.log(section);
-    printData(class_name, section);
+    let link = `https://api.umd.io/v1/courses/sections/${class_name}-${section}`;
+
+    try {
+      //let response = await axios.get(link); //trying the link to make sure class is valid
+      // Add the class_name and section to the Supabase table
+      const { data, error } = await supabase.from("data").insert([
+        {
+          uniqueKey: uniqueKey,
+          class_name: class_name,
+          section: section,
+          api_link: link,
+        },
+      ]);
+
+      if (error) {
+        console.error("Error adding data to Supabase:", error.message);
+      } else {
+        console.log("Data added to Supabase successfully:", data);
+      }
+    } catch (error) {
+      console.error("Error:", error.message);
+    }
+
+    // Call the existing printData function to fetch and display the data
+    printData(link);
+    // Optionally, you can reset form fields or perform other actions after successful data addition
     class_name = "";
     section = "";
   }
 
   // Function is used to process the user data that was entered and print the outputs
-  async function printData(class_name, id) {
+  async function printData(link) {
     try {
-      let response = await axios.get(
-        `https://api.umd.io/v1/courses/sections/${class_name}-${id}`
-      );
+      let response = await axios.get(link);
       let data = response.data;
 
       if (data[0]) {
