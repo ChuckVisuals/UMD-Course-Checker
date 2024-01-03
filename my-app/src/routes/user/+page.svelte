@@ -69,7 +69,7 @@
     Welcome back {name}
   </div>
 
-  <div class="p-60 flex justify-center text-xl">
+  <div class="py-52 px-20 flex justify-center text-xl">
     <p>
       Enter in your email/terpmail and or phone number to get alerts on when
       your class will be open above using the enter user data button
