@@ -1,52 +1,70 @@
-<div class="navbar bg-base-100 z-100">
-  <div class="navbar-start">
-    <div class="dropdown">
-      <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          ><path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 6h16M4 12h16M4 18h7"
-          /></svg
-        >
-      </div>
-      <ul
-        tabindex="0"
-        class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
-      >
-        <li><a href="/user">Your Profile</a></li>
-      </ul>
-    </div>
-  </div>
+<script>
+  import { onMount, onDestroy, afterUpdate } from "svelte";
 
-  <div class="navbar-center">
-    <a href="/" class="btn btn-ghost text-xl">UMD Course Checker</a>
-  </div>
+  let days = 0;
+  let hours = 0;
+  let minutes = 0;
+  let seconds = 0;
 
-  <div class="navbar-end">
-    <button class="btn btn-ghost btn-circle">
-      <div class="indicator">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          ><path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-          /></svg
-        >
-        <span class="badge badge-xs badge-primary indicator-item"></span>
-      </div>
-    </button>
+  // Set the target date (January 10, 2024)
+  const targetDate = new Date("2024-01-10T00:00:00").getTime();
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const timeDifference = targetDate - now;
+
+    if (timeDifference > 0) {
+      days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+      hours = Math.floor(
+        (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+      seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+    } else {
+      // Countdown reached or passed the target date
+      days = hours = minutes = seconds = 0;
+      clearInterval(interval);
+    }
+  }
+
+  // Update the countdown every second
+  let interval;
+  onMount(() => {
+    interval = setInterval(updateCountdown, 1000);
+  });
+
+  afterUpdate(() => {
+    updateCountdown(); // Ensure countdown is updated after each render
+  });
+
+  onDestroy(() => {
+    clearInterval(interval); // Cleanup when the component is destroyed
+  });
+</script>
+
+<div class="flex gap-5">
+  <div>
+    <span class="countdown font-mono text-4xl">
+      <span style={days}></span>
+    </span>
+    days
+  </div>
+  <div>
+    <span class="countdown font-mono text-4xl">
+      <span style="--value:10;"></span>
+    </span>
+    hours
+  </div>
+  <div>
+    <span class="countdown font-mono text-4xl">
+      <span style="--value:24;"></span>
+    </span>
+    min
+  </div>
+  <div>
+    <span class="countdown font-mono text-4xl">
+      <span style="--value:38;"></span>
+    </span>
+    sec
   </div>
 </div>

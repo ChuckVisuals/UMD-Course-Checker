@@ -52,14 +52,15 @@
     </div>
   </div>
 
-  <div class="w-screen h-screen grid place-items-center flex justify-center">
+  <div class="p-60 flex justify-center text-2xl">
     <p>
       Hey, I made this project so that victims like myself wont be screwed over
       with the testudo registration. This build is in beta so if you find any
       bugs feel free to submit a issue request over to the <a
+        class="link link-primary"
         href="https://github.com/ChuckVisuals/UMD-Course-Checker/issues"
         >github repo</a
-      >
+      > :]
     </p>
   </div>
 </body>
