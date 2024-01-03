@@ -52,6 +52,7 @@
           user_found = true;
         } else {
           name = "New User";
+          email = "N/A";
         }
       }
     }
@@ -156,9 +157,11 @@
   <div class="p-14 text-2xl">
     Welcome back {name}
   </div>
-  <div class="px-14 py-14 text-2xl">
-    Current Email: {email}
-  </div>
+  {#if !user_found}
+    <div class="px-14 py-14 text-2xl">
+      Current Email: {email}
+    </div>
+  {/if}
 
   {#if !user_found}
     <div class="py-52 px-20 flex justify-center text-xl">
