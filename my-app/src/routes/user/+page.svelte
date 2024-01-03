@@ -157,7 +157,7 @@
   <div class="p-14 text-2xl">
     Welcome back {name}
   </div>
-  {#if !user_found}
+  {#if user_found}
     <div class="px-14 py-14 text-2xl">
       Current Email: {email}
     </div>
