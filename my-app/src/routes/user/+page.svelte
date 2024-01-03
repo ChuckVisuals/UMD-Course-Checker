@@ -1,11 +1,99 @@
 <script>
-  let user_found;
+  import { v4 as uuidv4 } from "uuid";
+  import { createClient } from "@supabase/supabase-js";
+  import { onMount } from "svelte";
+
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
+  let user_found = false;
   let form_model;
   let email;
   let name;
-  name = name || "New User";
+  $: name;
 
-  async function add_user() {}
+  //local storage code
+  let uniqueKey;
+  console.log("here");
+
+  if (typeof localStorage !== "undefined") {
+    // Check if localStorage is defined (not in SSR)
+    uniqueKey = JSON.parse(localStorage.getItem("uniqueKey"));
+
+    if (!uniqueKey) {
+      uniqueKey = uuidv4();
+      localStorage.setItem("uniqueKey", JSON.stringify(uniqueKey));
+    }
+    console.log(uniqueKey);
+  } else {
+    // Handle the case when localStorage is not available (SSR)
+    console.warn(
+      "localStorage is not available in this environment (probably SSR)."
+    );
+  }
+
+  //updates the user from db based on device
+  onMount(async () => {
+    if (uniqueKey) {
+      // Fetch all rows with the given uniqueKey
+      const { data, error } = await supabase
+        .from("user_data")
+        .select("name, email")
+        .eq("uniqueKey", uniqueKey);
+      console.log(data);
+
+      if (error) {
+        console.error("Error fetching API links:", error.message);
+      } else {
+        if (data.length > 0) {
+          name = data[0].name || "";
+          email = data[0].email || "";
+          user_found = true;
+        } else {
+          name = "New User";
+        }
+      }
+    }
+  });
+
+  async function add_user() {
+    if (!user_found) {
+      try {
+        // Add the class_name and section to the Supabase table
+        const { data, error } = await supabase.from("user_data").insert([
+          {
+            uniqueKey: uniqueKey,
+            email: email,
+            name: name,
+          },
+        ]);
+        form_model = false;
+        if (error) {
+          console.error("Error adding data to Supabase:", error.message);
+        } else {
+          console.log("Data added to Supabase successfully:", data);
+        }
+      } catch (error) {
+        console.error("Error:", error.message);
+      }
+    } else {
+      //updates the user from db based on device
+      try {
+        if (uniqueKey) {
+          // Fetch all rows with the given uniqueKey
+          const { data, error } = await supabase
+            .from("user_data")
+            .update({ name: name, email: email })
+            .eq("uniqueKey", uniqueKey);
+          console.log(data);
+          form_model = false;
+        }
+      } catch (error) {
+        console.error("Error fetching API links:", error.message);
+      }
+    }
+  }
 </script>
 
 <body>
@@ -68,13 +156,18 @@
   <div class="p-14 text-2xl">
     Welcome back {name}
   </div>
-
-  <div class="py-52 px-20 flex justify-center text-xl">
-    <p>
-      Enter in your email/terpmail and or phone number to get alerts on when
-      your class will be open above using the enter user data button
-    </p>
+  <div class="px-14 py-14 text-2xl">
+    Current Email: {email}
   </div>
+
+  {#if !user_found}
+    <div class="py-52 px-20 flex justify-center text-xl">
+      <p>
+        Enter in your email/terpmail and or phone number to get alerts on when
+        your class will be open above using the enter user data button
+      </p>
+    </div>
+  {/if}
 
   {#if form_model}
     <div class="popup-container">

@@ -66,7 +66,7 @@
     let link = `https://api.umd.io/v1/courses/sections/${class_name}-${section}`;
 
     try {
-      //let response = await axios.get(link); //trying the link to make sure class is valid
+      let response = await axios.get(link); //trying the link to make sure class is valid
       // Add the class_name and section to the Supabase table
       const { data, error } = await supabase.from("data").insert([
         {
