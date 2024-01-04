@@ -51,8 +51,8 @@
           email = data[0].email || "";
           user_found = true;
         } else {
-          name = "New User";
-          email = "N/A";
+          name = "";
+          email = "";
         }
       }
     }
