@@ -7,7 +7,7 @@ import time
 # Class Object used to store the data for the course data
 class CourseData(object):
 	id = ""
-	class_name = ""
+	class_name = "test"
 
 	def __init__ (self, id, class_name, mytime):
 		self.id = id
