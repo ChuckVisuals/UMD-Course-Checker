@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: '*/30 * * * *'
 
+env:
+  url: ${{ secrets.SUPABASE_URL }}
+  key: ${{ secrets.SUPABASE_KEY }}
+
 jobs:
   update:
     runs-on: ubuntu-latest
