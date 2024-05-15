@@ -1,6 +1,7 @@
 <script>
   import { v4 as uuidv4 } from "uuid";
   import { createClient } from "@supabase/supabase-js";
+  import { printData, setLocalStorage } from "$lib/utils.js";
   import { onMount } from "svelte";
 
   const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -14,24 +15,8 @@
   $: name;
 
   //local storage code
-  let uniqueKey;
-  console.log("here");
-
-  if (typeof localStorage !== "undefined") {
-    // Check if localStorage is defined (not in SSR)
-    uniqueKey = JSON.parse(localStorage.getItem("uniqueKey"));
-
-    if (!uniqueKey) {
-      uniqueKey = uuidv4();
-      localStorage.setItem("uniqueKey", JSON.stringify(uniqueKey));
-    }
-    console.log(uniqueKey);
-  } else {
-    // Handle the case when localStorage is not available (SSR)
-    console.warn(
-      "localStorage is not available in this environment (probably SSR)."
-    );
-  }
+  let uniqueKey = setLocalStorage();
+  console.log(uniqueKey);
 
   //updates the user from db based on device
   onMount(async () => {
@@ -60,6 +45,7 @@
 
   async function add_user() {
     if (!user_found) {
+      console.log("not found");
       try {
         // Add the class_name and section to the Supabase table
         const { data, error } = await supabase.from("user_data").insert([
@@ -80,6 +66,7 @@
         console.error("Error:", error.message);
       }
     } else {
+      console.log("found user");
       //updates the user from db based on device
       try {
         if (uniqueKey) {
@@ -155,21 +142,37 @@
     </div>
   </div>
 
-  <div class="p-14 text-2xl">
-    Welcome back {name}
-  </div>
-  {#if user_found}
-    <div class="px-14 py-14 text-2xl">
-      Current Email: {email}
-    </div>
-  {/if}
-
   {#if !user_found}
     <div class="py-52 px-20 flex justify-center text-xl">
       <p>
         Enter in your email/terpmail and or phone number to get alerts on when
         your class will be open above using the enter user data button
       </p>
+    </div>
+  {:else}
+    <div class="flex flex-col justify-center items-center min-h-screen">
+      <div class="card w-fit bg-primary text-primary-content">
+        <div class="card-body">
+          <h2 class="card-title">
+            {#if name}
+              Welcome back {name}
+            {:else}
+              Welcome, please sign in.
+            {/if}
+          </h2>
+          {#if user_found}
+            <div class="text-2xl">
+              Current Email: {email}
+            </div>
+          {/if}
+        </div>
+      </div>
+      <div class="py-52 px-20 flex justify-center text-xl">
+        <p>
+          If you would like to change your email or phone number, please use the
+          enter user data button
+        </p>
+      </div>
     </div>
   {/if}
 
