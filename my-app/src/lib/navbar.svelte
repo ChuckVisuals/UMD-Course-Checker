@@ -41,12 +41,20 @@
         </div>
     </div>
 
-    <div class="navbar-center">
+    <div class="navbar-center hidden md:block">
         <a href="./" class="btn btn-ghost text-xl">UMD Course Checker</a>
     </div>
 
+    <button
+        class="btn m-4 md:hidden"
+        on:click={() => (form_model = !form_model)}
+        >Add another class
+    </button>
+
     <div class="navbar-end">
-        <button class="btn m-4" on:click={() => (form_model = !form_model)}
+        <button
+            class="btn m-4 hidden md:block"
+            on:click={() => (form_model = !form_model)}
             >Add another class
         </button>
         <button class="btn btn-ghost btn-circle">

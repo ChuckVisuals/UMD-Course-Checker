@@ -129,12 +129,20 @@
         </div>
       </div>
 
-      <div class="navbar-center">
-        <a href="/" class="btn btn-ghost text-xl">UMD Course Checker</a>
+      <div class="navbar-center hidden md:block">
+        <a href="./" class="btn btn-ghost text-xl">UMD Course Checker</a>
       </div>
 
+      <button
+        class="btn m-4 md:hidden"
+        on:click={() => (form_model = !form_model)}
+        >Enter User Data
+      </button>
+
       <div class="navbar-end">
-        <button class="btn m-4" on:click={() => (form_model = !form_model)}
+        <button
+          class="btn m-4 hidden md:block"
+          on:click={() => (form_model = !form_model)}
           >Enter User Data
         </button>
         <button class="btn btn-ghost btn-circle">
@@ -159,15 +167,17 @@
     </div>
 
     {#if !user_found}
-      <div class="py-52 px-20 flex justify-center text-xl">
+      <div class="my-20 mx-20 flex justify-center text-xl">
         <p>
           Enter in your email/terpmail and or phone number to get alerts on when
           your class will be open above using the enter user data button
         </p>
       </div>
     {:else}
-      <div class="flex flex-col justify-center items-center min-h-screen">
-        <div class="card w-fit bg-primary text-primary-content shadow-2xl">
+      <div class="flex flex-col justify-center items-center my-16">
+        <div
+          class="card w-fit bg-primary text-primary-content shadow-2xl mx-10"
+        >
           <div class="card-body">
             <h2 class="card-title">
               {#if name}
@@ -186,7 +196,7 @@
             <a href="/" class="btn">Go Home</a>
           </div>
         </div>
-        <div class="py-52 px-20 flex justify-center text-xl">
+        <div class="my-20 mx-20 flex justify-center text-xl">
           <p>
             If you would like to change your email or phone number, please use
             the enter user data button
