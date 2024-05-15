@@ -60,8 +60,6 @@
         ]);
         form_model = false;
         user_found = true;
-        name = "";
-        email = "";
         if (error) {
           console.error("Error adding data to Supabase:", error.message);
         } else {
@@ -82,8 +80,6 @@
             .eq("uniqueKey", uniqueKey);
           console.log(data);
           form_model = false;
-          name = "";
-          email = "";
         }
       } catch (error) {
         console.error("Error fetching API links:", error.message);
