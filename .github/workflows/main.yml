@@ -1,6 +1,7 @@
 name: Update seats
 
 on:
+  push:
   schedule:
     - cron: '*/30 * * * *'
 
