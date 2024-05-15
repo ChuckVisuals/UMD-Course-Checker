@@ -54,4 +54,5 @@ def update_all_seats():
 
 # Call the function to update all seats
 update_all_seats()
+
 print("Done")
