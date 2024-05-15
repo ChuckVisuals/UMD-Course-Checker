@@ -40,6 +40,7 @@
         } else {
           name = "";
           email = "";
+          loading = false;
         }
       }
     }
