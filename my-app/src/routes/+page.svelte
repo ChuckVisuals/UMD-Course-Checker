@@ -1,6 +1,6 @@
 <script>
   import "../app.css";
-  import Navbar from "$lib/Navbar.svelte";
+  import Navbar from "$lib/navbar.svelte";
   import { checkUserExists, setLocalStorage, removeClass } from "$lib/utils.js";
   import { classData } from "$lib/store.js";
 
