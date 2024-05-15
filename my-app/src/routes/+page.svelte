@@ -13,8 +13,11 @@
 
   let class_array = [];
   let user_found = false;
+  $: user_found;
   $: class_array; // Ensure reactivity
   let uniqueKey = setLocalStorage();
+  let loading = true;
+  let showAlert = true;
 
   classData.subscribe((value) => {
     console.log(value);
@@ -37,11 +40,28 @@
   onMount(fetchData);
 
   console.log(class_array);
-  user_found = checkUserExists(uniqueKey);
+  onMount(async () => {
+    user_found = await checkUserExists(uniqueKey);
+    console.log(user_found);
+    setTimeout(() => {
+      loading = false;
+    }, 1500);
+  });
+  onMount(() => {
+    setTimeout(() => {
+      showAlert = false;
+    }, 5000); // waits for 5 seconds
+  });
 </script>
 
 <Navbar />
-{#if user_found}
+{#if loading}
+  <div
+    class="flex items-center justify-center h-screen w-screen fixed top-0 left-0 place-items-center backdrop-blur-lg bg-black/20"
+  >
+    <span class="loading loading-infinity loading-lg"></span>
+  </div>
+{:else if !user_found}
   <div class="hero min-h-screen bg-base-200">
     <div class="hero-content text-center">
       <div class="max-w-md">
@@ -91,5 +111,25 @@
         {/each}
       </tbody>
     </table>
+  </div>
+  <div
+    role="alert"
+    class={`alert alert-success fixed bottom-0 left-0 w-fit ml-20 mb-10 transition duration-500 ${showAlert ? "opacity-100" : "opacity-0"}`}
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="stroke-current shrink-0 h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+      ><path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+      /></svg
+    >
+    <span
+      >You will receive an email once one of your classes have available seats!</span
+    >
   </div>
 {/if}
