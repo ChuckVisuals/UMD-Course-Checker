@@ -34,7 +34,7 @@
     </div>
 
     <div class="navbar-end">
-      <button class="btn btn-ghost btn-circle">
+      <button class="btn btn-ghost btn-circle ml-4">
         <div class="indicator">
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -45,17 +45,19 @@
         <a href="./" class="btn btn-ghost text-xl">UMD Course Checker</a>
     </div>
 
-    <button class="btn md:hidden" on:click={() => (form_model = !form_model)}
+    <button
+        class="btn btn-neutral md:hidden"
+        on:click={() => (form_model = !form_model)}
         >Add another class
     </button>
 
     <div class="navbar-end">
         <button
-            class="btn hidden md:block"
+            class="btn btn-neutral hidden md:block"
             on:click={() => (form_model = !form_model)}
             >Add another class
         </button>
-        <button class="btn btn-ghost btn-circle">
+        <button class="btn btn-ghost btn-circle ml-4">
             <div class="indicator">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"

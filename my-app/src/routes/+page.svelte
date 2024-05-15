@@ -45,7 +45,7 @@
     console.log(user_found);
     setTimeout(() => {
       loading = false;
-    }, 1500);
+    }, 1000);
   });
   onMount(() => {
     setTimeout(() => {
@@ -57,7 +57,7 @@
 <Navbar />
 {#if loading}
   <div
-    class="flex items-center justify-center h-screen w-screen fixed top-0 left-0 place-items-center backdrop-blur-lg bg-black/20"
+    class="flex items-center justify-center h-screen w-screen fixed top-0 left-0 place-items-center backdrop-blur-lg bg-black/20 z-20"
   >
     <span class="loading loading-infinity loading-lg"></span>
   </div>
@@ -114,7 +114,9 @@
   </div>
   <div
     role="alert"
-    class={`alert alert-success fixed bottom-0 left-0 w-fit ml-20 mb-10 transition duration-500 ${showAlert ? "opacity-100" : "opacity-0"}`}
+    class={`alert alert-success fixed bottom-0 left-0 w-fit ml-20 mb-10 transition duration-500 ${
+      showAlert ? "opacity-100" : "opacity-0"
+    }`}
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"

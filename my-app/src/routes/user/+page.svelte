@@ -90,9 +90,9 @@
 
 {#if loading}
   <div
-    class="flex items-center justify-center h-screen w-screen fixed top-0 left-0 place-items-center backdrop-blur-lg bg-black/20"
+    class="flex items-center justify-center h-screen w-screen fixed top-0 left-0 place-items-center backdrop-blur-lg bg-black/20 z-20"
   >
-    <span class="loading loading-infinity loading-lg"></span>
+    <span class="loading loading-infinity loading-lg z-20"></span>
   </div>
 {:else}
   <body>
@@ -130,17 +130,19 @@
         <a href="./" class="btn btn-ghost text-xl">UMD Course Checker</a>
       </div>
 
-      <button class="btn md:hidden" on:click={() => (form_model = !form_model)}
+      <button
+        class="btn btn-neutral md:hidden"
+        on:click={() => (form_model = !form_model)}
         >Enter User Data
       </button>
 
       <div class="navbar-end">
         <button
-          class="btn hidden md:block"
+          class="btn btn-neutral hidden md:block"
           on:click={() => (form_model = !form_model)}
           >Enter User Data
         </button>
-        <button class="btn btn-ghost btn-circle">
+        <button class="btn btn-ghost btn-circle ml-4">
           <div class="indicator">
             <svg
               xmlns="http://www.w3.org/2000/svg"
