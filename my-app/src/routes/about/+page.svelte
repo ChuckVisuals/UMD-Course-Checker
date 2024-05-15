@@ -1,53 +1,5 @@
-<script>
-  import { onMount } from "svelte";
-
-  let countdownDays;
-  let countdownHours;
-  let countdownMinutes;
-  let countdownSeconds;
-
-  onMount(() => {
-    // Get the countdown elements
-    countdownDays = document.querySelector(".countdown:nth-child(1) span");
-    countdownHours = document.querySelector(".countdown:nth-child(2) span");
-    countdownMinutes = document.querySelector(".countdown:nth-child(3) span");
-    countdownSeconds = document.querySelector(".countdown:nth-child(4) span");
-
-    // Update the countdown every second
-    const intervalId = setInterval(() => {
-      // Get the current date and time
-      const now = new Date().getTime();
-
-      // Get the target date and time
-      const target = new Date("2024-08-29").getTime();
-
-      // Calculate the difference in milliseconds
-      const difference = target - now;
-
-      // Calculate days, hours, minutes, and seconds
-      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-      );
-      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-      // Update the --value CSS variable for each countdown element
-      countdownDays.style.setProperty("--value", days);
-      countdownHours.style.setProperty("--value", hours);
-      countdownMinutes.style.setProperty("--value", minutes);
-      countdownSeconds.style.setProperty("--value", seconds);
-    }, 1000);
-
-    // Cleanup function to clear the interval when the component is unmounted
-    return () => {
-      clearInterval(intervalId);
-    };
-  });
-</script>
-
 <body class="overflow-hidden">
-  <div class="navbar bg-base-100 z-100">
+  <div class="navbar bg-base-200 z-100">
     <div class="navbar-start">
       <div class="dropdown">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
@@ -69,8 +21,9 @@
         <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
         <ul
           tabindex="0"
-          class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+          class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 border-2 border-neutral"
         >
+          <li><a href="/">Dashboard</a></li>
           <li><a href="/user">Your Profile</a></li>
         </ul>
       </div>
