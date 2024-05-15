@@ -41,7 +41,7 @@
 </script>
 
 <Navbar />
-{#if !user_found}
+{#if user_found}
   <div class="hero min-h-screen bg-base-200">
     <div class="hero-content text-center">
       <div class="max-w-md">
