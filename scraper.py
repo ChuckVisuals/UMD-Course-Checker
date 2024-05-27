@@ -12,8 +12,8 @@ key: str = os.getenv("SUPABASE_KEY")
 email = "coursecheckerumd@gmail.com"
 
 #USED FOR GH ACTIONS ONLY
-url: str = os.environ["url"]
-key: str = os.environ["key"]
+#url: str = os.environ["url"]
+#key: str = os.environ["key"]
 print(url, key)
 supabase: Client = create_client(url, key)
 
@@ -32,7 +32,7 @@ class ClassData:
 
 # gets the seat count from testudo for a specific class and section
 def get_seats(class_name, section_id):
-    url = f'https://app.testudo.umd.edu/soc/search?courseId={class_name.upper()}&sectionId=&termId=202401&_openSectionsOnly=on&creditCompare=%3E%3D&credits=0.0&courseLevelFilter=ALL&instructor=&_facetoface=on&_blended=on&_online=on&courseStartCompare=&courseStartHour=&courseStartMin=&courseStartAM=&courseEndHour=&courseEndMin=&courseEndAM=&teachingCenter=ALL&_classDay1=on&_classDay2=on&_classDay3=on&_classDay4=on&_classDay5=on'
+    url = f'https://app.testudo.umd.edu/soc/search?courseId={class_name.upper()}&sectionId=&termId=202408&_openSectionsOnly=on&creditCompare=%3E%3D&credits=0.0&courseLevelFilter=ALL&instructor=&_facetoface=on&_blended=on&_online=on&courseStartCompare=&courseStartHour=&courseStartMin=&courseStartAM=&courseEndHour=&courseEndMin=&courseEndAM=&teachingCenter=ALL&_classDay1=on&_classDay2=on&_classDay3=on&_classDay4=on&_classDay5=on'
 
     result = requests.get(url)
     filtered_divs = []
@@ -48,7 +48,7 @@ def get_seats(class_name, section_id):
             if seat_span:
                 return int(seat_span.text.strip())
             
-print(get_seats('CMSC131', '0101'))
+print(get_seats('CMSC320', '0201'))
 
 
 def update_seats(class_name, section_id):
