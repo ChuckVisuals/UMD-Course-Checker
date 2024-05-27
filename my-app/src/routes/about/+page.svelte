@@ -1,5 +1,5 @@
 <body class="overflow-hidden">
-  <div class="navbar bg-base-100 z-100">
+  <div class="navbar bg-base-200 z-100">
     <div class="navbar-start">
       <div class="dropdown">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
@@ -21,8 +21,9 @@
         <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
         <ul
           tabindex="0"
-          class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+          class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 border-2 border-neutral"
         >
+          <li><a href="/">Dashboard</a></li>
           <li><a href="/user">Your Profile</a></li>
         </ul>
       </div>
@@ -33,7 +34,7 @@
     </div>
 
     <div class="navbar-end">
-      <button class="btn btn-ghost btn-circle">
+      <button class="btn btn-ghost btn-circle ml-4">
         <div class="indicator">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +55,7 @@
     </div>
   </div>
 
-  <div class="py-72 px-20 flex justify-center text-2xl">
+  <div class="my-32 mx-20 flex justify-center text-2xl flex-col">
     <p>
       Hey, I made this project so that victims like myself wont be screwed over
       with the testudo registration. This build is in beta so if you find any
@@ -64,5 +65,5 @@
         >github repo</a
       > :]
     </p>
-  </div>
-</body>
+  </div></body
+>

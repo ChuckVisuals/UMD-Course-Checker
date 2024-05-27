@@ -60,8 +60,6 @@
         ]);
         form_model = false;
         user_found = true;
-        name = "";
-        email = "";
         if (error) {
           console.error("Error adding data to Supabase:", error.message);
         } else {
@@ -82,8 +80,6 @@
             .eq("uniqueKey", uniqueKey);
           console.log(data);
           form_model = false;
-          name = "";
-          email = "";
         }
       } catch (error) {
         console.error("Error fetching API links:", error.message);
@@ -94,13 +90,13 @@
 
 {#if loading}
   <div
-    class="flex items-center justify-center h-screen w-screen fixed top-0 left-0 place-items-center backdrop-blur-lg bg-black/20"
+    class="flex items-center justify-center h-screen w-screen fixed top-0 left-0 place-items-center backdrop-blur-lg bg-black/20 z-20"
   >
-    <span class="loading loading-infinity loading-lg"></span>
+    <span class="loading loading-infinity loading-lg z-20"></span>
   </div>
 {:else}
   <body>
-    <div class="navbar bg-base-100">
+    <div class="navbar bg-base-200">
       <div class="navbar-start">
         <div class="dropdown">
           <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
@@ -122,22 +118,31 @@
           <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
           <ul
             tabindex="0"
-            class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+            class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 border-2 border-neutral"
           >
+            <li><a href="/">Dashboard</a></li>
             <li><a href="/about">About</a></li>
           </ul>
         </div>
       </div>
 
-      <div class="navbar-center">
-        <a href="/" class="btn btn-ghost text-xl">UMD Course Checker</a>
+      <div class="navbar-center hidden md:block">
+        <a href="./" class="btn btn-ghost text-xl">UMD Course Checker</a>
       </div>
 
+      <button
+        class="btn btn-neutral md:hidden"
+        on:click={() => (form_model = !form_model)}
+        >Enter User Data
+      </button>
+
       <div class="navbar-end">
-        <button class="btn m-4" on:click={() => (form_model = !form_model)}
+        <button
+          class="btn btn-neutral hidden md:block"
+          on:click={() => (form_model = !form_model)}
           >Enter User Data
         </button>
-        <button class="btn btn-ghost btn-circle">
+        <button class="btn btn-ghost btn-circle ml-4">
           <div class="indicator">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -159,15 +164,17 @@
     </div>
 
     {#if !user_found}
-      <div class="py-52 px-20 flex justify-center text-xl">
+      <div class="my-20 mx-20 flex justify-center text-xl">
         <p>
           Enter in your email/terpmail and or phone number to get alerts on when
           your class will be open above using the enter user data button
         </p>
       </div>
     {:else}
-      <div class="flex flex-col justify-center items-center min-h-screen">
-        <div class="card w-fit bg-primary text-primary-content shadow-2xl">
+      <div class="flex flex-col justify-center items-center my-16">
+        <div
+          class="card w-fit bg-primary text-primary-content shadow-2xl mx-10"
+        >
           <div class="card-body">
             <h2 class="card-title">
               {#if name}
@@ -186,7 +193,7 @@
             <a href="/" class="btn">Go Home</a>
           </div>
         </div>
-        <div class="py-52 px-20 flex justify-center text-xl">
+        <div class="my-20 mx-20 flex justify-center text-xl">
           <p>
             If you would like to change your email or phone number, please use
             the enter user data button
