@@ -3,15 +3,31 @@ from bs4 import BeautifulSoup
 import os
 from supabase import create_client, Client
 from dotenv import load_dotenv
+import smtplib
 
+#USED FOR LOCAL DEV ONLY
 load_dotenv()
 url: str = os.getenv("SUPABASE_URL")
 key: str = os.getenv("SUPABASE_KEY")
+email = "coursecheckerumd@gmail.com"
 
+#USED FOR GH ACTIONS ONLY
 url: str = os.environ["url"]
 key: str = os.environ["key"]
 print(url, key)
 supabase: Client = create_client(url, key)
+
+
+#Class for open class data
+class ClassData:
+    def __init__(self, key, name, section, teacher):
+        self.key = key
+        self.name = name
+        self.section = section
+        self.teacher = teacher
+        
+    def print(self):
+        print(f"Key: {self.key}, Name: {self.name}, Section: {self.section}, Teacher: {self.teacher}")
 
 
 # gets the seat count from testudo for a specific class and section
@@ -57,5 +73,39 @@ def update_all_seats():
 
 # Call the function to update all seats
 update_all_seats()
+
+
+
+def sendEmails():
+    class_array = []
+    # Fetch all rows from the database table
+    rows = supabase.table('data').select('*').execute()
+    
+    # Iterate through each row
+    for row in rows.data:
+        if row["open_seats"] != None and row["open_seats"] > 0 and row["sent"] == False:
+            supabase.table('data').update({'sent': True}).eq('uniqueKey', row['uniqueKey']).eq('class_name', row['class_name']).execute()
+            newclass = ClassData(row['uniqueKey'],row["class_name"], row["section"], row["instructors"])
+            class_array.append(newclass)
+    
+    
+    # Fetch all rows from the database table
+    for classInfo in class_array:
+        row = supabase.table('user_data').select('*').eq('uniqueKey', classInfo.key).execute()
+
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(email, "zukyardfsvczvydr")
+        
+        # Reduce errors if user is not found etc
+        if len(row.data) > 0:
+            try:
+                print("sending")
+                server.sendmail(email, row.data[0]['email'].strip(), f"Subject: {classInfo.name} {classInfo.section} is now open!\n\nHello, {row.data[0]['name']}!\n\nThe class {classInfo.name} {classInfo.section} is now open! Go to testudo to register now!")
+            except Exception as e:
+                print("Error sending email:", e)
+        
+        
+sendEmails()
 
 print("Done")
