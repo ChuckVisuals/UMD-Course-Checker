@@ -12,8 +12,8 @@ key: str = os.getenv("SUPABASE_KEY")
 email = "coursecheckerumd@gmail.com"
 
 #USED FOR GH ACTIONS ONLY
-#url: str = os.environ["url"]
-#key: str = os.environ["key"]
+url: str = os.environ["url"]
+key: str = os.environ["key"]
 print(url, key)
 supabase: Client = create_client(url, key)
 
