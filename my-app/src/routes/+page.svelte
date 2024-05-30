@@ -40,12 +40,12 @@
   onMount(fetchData);
 
   console.log(class_array);
-  onMount(async () => {
-    user_found = await checkUserExists(uniqueKey);
-    console.log(user_found);
-    setTimeout(() => {
+  onMount(() => {
+    checkUserExists(uniqueKey).then((result) => {
+      user_found = result;
       loading = false;
-    }, 1000);
+      console.log(user_found);
+    });
   });
   onMount(() => {
     setTimeout(() => {
