@@ -4,17 +4,22 @@ import os
 from supabase import create_client, Client
 from dotenv import load_dotenv
 import smtplib
+from email.message import EmailMessage
 
 #USED FOR LOCAL DEV ONLY
 load_dotenv()
 url: str = os.getenv("SUPABASE_URL")
 key: str = os.getenv("SUPABASE_KEY")
-email = "coursecheckerumd@gmail.com"
+password = os.getenv("PASSWORD")
 
 #USED FOR GH ACTIONS ONLY
 url: str = os.environ["url"]
 key: str = os.environ["key"]
+password = os.environ["password"]
 print(url, key)
+
+#GLOBAL STUFF
+email = "umdcoursechecker@outlook.com"
 supabase: Client = create_client(url, key)
 
 
@@ -93,9 +98,9 @@ def sendEmails():
     for classInfo in class_array:
         row = supabase.table('user_data').select('*').eq('uniqueKey', classInfo.key).execute()
 
-        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server = smtplib.SMTP('smtp-mail.outlook.com', 587)
         server.starttls()
-        server.login(email, "zukyardfsvczvydr")
+        server.login(email, password)
         
         # Reduce errors if user is not found etc
         if len(row.data) > 0:
