@@ -8,6 +8,7 @@ on:
 env:
   url: ${{ secrets.SUPABASE_URL }}
   key: ${{ secrets.SUPABASE_KEY }}
+  PASSWORD: ${{ secrets.PASSWORD }}
 
 jobs:
   update:
