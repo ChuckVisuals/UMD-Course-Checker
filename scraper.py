@@ -15,7 +15,7 @@ password = os.getenv("PASSWORD")
 #USED FOR GH ACTIONS ONLY
 url: str = os.environ["url"]
 key: str = os.environ["key"]
-password = os.environ["password"]
+password = os.environ["PASSWORD"]
 print(url, key)
 
 #GLOBAL STUFF
