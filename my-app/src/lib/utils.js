@@ -172,28 +172,4 @@ export async function checkUserExists(uniqueKey) {
         }
     }
     return false;
-}
-
-//==============================================================================================================//   
-export async function checkOpenClasses(uniqueKey) {
-
-    let openClasses = 0;
-    // Fetch all rows with the given uniqueKey
-    const { data, error } = await supabase
-        .from("data")
-        .select("*")
-        .eq("uniqueKey", uniqueKey);
-
-    console.log(data);
-    for (let i = 0; i < data.length; i++) {
-        if (data[i].sent == true) {
-            openClasses++;
-        }
-    }
-    console.log(openClasses);
-
-    if (error) {
-        console.error("Error fetching API links:", error.message);
-    }
-    return openClasses;
-}
+} 

@@ -1,9 +1,5 @@
 <script>
-    import {
-        setLocalStorage,
-        add_class,
-        checkOpenClasses,
-    } from "$lib/utils.js";
+    import { setLocalStorage, add_class } from "$lib/utils.js";
     import { onMount } from "svelte";
     import { classData } from "$lib/store.js";
 
@@ -15,11 +11,6 @@
     let isError = false;
     let class_array = [];
     let uniqueKey = setLocalStorage();
-    $: openClasses = 0;
-    onMount(async () => {
-        openClasses = await checkOpenClasses(uniqueKey);
-    });
-    console.log(checkOpenClasses(uniqueKey));
 </script>
 
 <div class="navbar bg-base-200">
