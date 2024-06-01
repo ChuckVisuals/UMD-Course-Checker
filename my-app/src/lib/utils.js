@@ -46,9 +46,8 @@ export async function printData(link) {
 //supabase db code
 export async function add_class(uniqueKey, class_name, section, class_array) {
 
-    let link = `https://api.umd.io/v1/courses/sections/${class_name}-${section}`;
-
     try {
+        let link = `https://api.umd.io/v1/courses/sections/${class_name}-${section}`;
         let response = await axios.get(link); //trying the link to make sure class is valid
 
         console.log(response.data);
@@ -133,8 +132,9 @@ export async function removeClass(uniqueKey, index, class_info, class_array) {
 }
 
 //==============================================================================================================//
-
+//Helper function inside of ulit.js
 async function fetchData() {
+
     let uniqueKey = setLocalStorage();
     // Fetch all rows with the given uniqueKey
     const { data, error } = await supabase
@@ -172,4 +172,28 @@ export async function checkUserExists(uniqueKey) {
         }
     }
     return false;
+}
+
+//==============================================================================================================//   
+export async function checkOpenClasses(uniqueKey) {
+
+    let openClasses = 0;
+    // Fetch all rows with the given uniqueKey
+    const { data, error } = await supabase
+        .from("data")
+        .select("*")
+        .eq("uniqueKey", uniqueKey);
+
+    console.log(data);
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].sent == true) {
+            openClasses++;
+        }
+    }
+    console.log(openClasses);
+
+    if (error) {
+        console.error("Error fetching API links:", error.message);
+    }
+    return openClasses;
 }

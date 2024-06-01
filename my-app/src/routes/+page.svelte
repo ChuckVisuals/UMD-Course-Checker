@@ -76,42 +76,71 @@
     </div>
   </div>
 {:else}
-  <div class="overflow-x-auto z-0">
+  <div
+    class="overflow-x-auto z-0 mx-20 my-4 rounded-md border border-1 border-gray-800 shadow-xl"
+  >
     <table class="table">
       <!-- head -->
       <thead>
         <tr>
-          <th></th>
+          <th>#</th>
           <th>Professor</th>
           <th>Class</th>
           <th>Seats Available</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
         {#each class_array as classData, index (index)}
-          <tr class="hover">
-            <th>{index + 1}</th>
-            <td>{classData.instructors ? classData.instructors[0] : "TBA"}</td>
-            <td>{`${classData.class_name}-${classData.section}`}</td>
-            <td>{classData.open_seats}</td>
-            <td
-              ><button
-                on:click={() => {
-                  removeClass(uniqueKey, index, classData, class_array).then(
-                    () => {
-                      fetchData();
-                    },
-                  );
-                }}
+          {#if classData.sent == true}
+            <tr
+              class="hover:bg-emerald-700 bg-emerald-600 text-black cursor-pointer"
+            >
+              <th>{index + 1}</th>
+              <td>{classData.instructors ? classData.instructors[0] : "TBA"}</td
               >
-                Remove
-              </button>
-            </td>
-          </tr>
+              <td>{`${classData.class_name}-${classData.section}`}</td>
+              <td>{classData.open_seats}</td>
+              <td
+                ><button
+                  on:click={() => {
+                    removeClass(uniqueKey, index, classData, class_array).then(
+                      () => {
+                        fetchData();
+                      },
+                    );
+                  }}
+                >
+                  Remove
+                </button>
+              </td>
+            </tr>{:else}
+            <tr class="hover cursor-pointer">
+              <th>{index + 1}</th>
+              <td>{classData.instructors ? classData.instructors[0] : "TBA"}</td
+              >
+              <td>{`${classData.class_name}-${classData.section}`}</td>
+              <td>{classData.open_seats}</td>
+              <td
+                ><button
+                  on:click={() => {
+                    removeClass(uniqueKey, index, classData, class_array).then(
+                      () => {
+                        fetchData();
+                      },
+                    );
+                  }}
+                >
+                  Remove
+                </button>
+              </td>
+            </tr>
+          {/if}
         {/each}
       </tbody>
     </table>
   </div>
+
   <div
     role="alert"
     class={`alert alert-success fixed bottom-0 left-0 w-fit ml-20 mb-10 transition duration-500 ${
