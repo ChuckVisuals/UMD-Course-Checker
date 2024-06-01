@@ -77,7 +77,7 @@
   </div>
 {:else}
   <div
-    class="overflow-x-auto z-0 mx-20 my-4 rounded-md border border-1 border-gray-800 shadow-xl"
+    class="overflow-x-auto z-0 sm:mx-20 my-4 rounded-md border border-1 border-gray-800 shadow-xl"
   >
     <table class="table">
       <!-- head -->
