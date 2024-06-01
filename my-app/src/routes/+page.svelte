@@ -82,11 +82,11 @@
     <table class="table">
       <!-- head -->
       <thead>
-        <tr>
+        <tr class="text-center">
           <th>#</th>
           <th>Professor</th>
           <th>Class</th>
-          <th>Seats Available</th>
+          <th>Seat Count</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -94,7 +94,7 @@
         {#each class_array as classData, index (index)}
           {#if classData.sent == true}
             <tr
-              class="hover:bg-emerald-700 bg-emerald-600 text-black cursor-pointer"
+              class="hover:bg-emerald-700 bg-emerald-600 text-black cursor-pointer text-center"
             >
               <th>{index + 1}</th>
               <td>{classData.instructors ? classData.instructors[0] : "TBA"}</td
@@ -115,7 +115,7 @@
                 </button>
               </td>
             </tr>{:else}
-            <tr class="hover cursor-pointer">
+            <tr class="hover cursor-pointer text-center">
               <th>{index + 1}</th>
               <td>{classData.instructors ? classData.instructors[0] : "TBA"}</td
               >
