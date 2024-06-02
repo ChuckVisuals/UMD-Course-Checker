@@ -62,7 +62,7 @@ export async function add_class(uniqueKey, class_name, section, class_array) {
                 class_name: class_name.toUpperCase(),
                 section: section,
                 api_link: link,
-                instructors: apiData[0].instructors,
+                instructors: apiData[0].instructors.length > 0 ? apiData[0].instructors : 'TBA',
                 open_seats: apiData[0].open_seats,
             },
         ]);
