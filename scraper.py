@@ -43,7 +43,8 @@ def get_seats(class_name, section_id):
     filtered_divs = []
 
     doc = BeautifulSoup(result.text ,"html.parser")
-    divs = doc.find_all('div', class_='section delivery-f2f')
+    #print(doc.prettify())
+    divs = doc.find_all('div', class_=['section delivery-f2f','section delivery-online','section delivery-blended'])
 
     for div in divs:
         span = div.find('span', class_='section-id')
@@ -53,7 +54,7 @@ def get_seats(class_name, section_id):
             if seat_span:
                 return int(seat_span.text.strip())
             
-print(get_seats('CMSC320', '0201'))
+#print("Seats" + str(get_seats('INST104', '0101')))
 
 
 def update_seats(class_name, section_id):
