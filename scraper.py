@@ -54,13 +54,13 @@ def get_seats(class_name, section_id):
             if seat_span:
                 return int(seat_span.text.strip())
             
-#print("Seats" + str(get_seats('INST104', '0101')))
+#print("Seats" + str(get_seats('CMSC335', '0201')))
 
 
 def update_seats(class_name, section_id):
     
     seats = get_seats(class_name, section_id)
-    supabase.table('data').update({'open_seats': seats}).eq('class_name', class_name).execute()
+    supabase.table('data').update({'open_seats': seats}).eq('class_name', class_name).eq('section', section_id).execute()
 
 
 # Loop through each row in the database and update the seat count
