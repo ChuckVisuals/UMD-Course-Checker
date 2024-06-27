@@ -55,7 +55,23 @@ export async function add_class(uniqueKey, class_name, section, class_array) {
         let apiData = response.data;
         console.log(apiData[0].instructors);
 
-        // Add the class_name and section to the Supabase table
+        const { data: existingClass, error: existingError } = await supabase
+            .from("data")
+            .select()
+            .eq('class_name', class_name.toUpperCase())
+            .eq('section', section)
+            .eq('uniqueKey', uniqueKey);
+            
+        if (existingError) {
+            console.error('Error checking existing data in Supabase:', existingError.message);
+            return fetchData();
+        }
+
+        if (existingClass.length > 0) {
+            console.error('Class already exists for the user in Supabase:', existingClass);
+            return fetchData();
+        }
+
         const { data, error } = await supabase.from("data").insert([
             {
                 uniqueKey: uniqueKey,
