@@ -44,7 +44,7 @@ export async function printData(link) {
 //=================================================================================================================//
 
 //supabase db code
-export async function add_class(uniqueKey, class_name, section, class_array) {
+export async function add_class(uniqueKey, class_name, section) {
 
     try {
         let link = `https://api.umd.io/v1/courses/sections/${class_name}-${section}`;
@@ -61,7 +61,7 @@ export async function add_class(uniqueKey, class_name, section, class_array) {
             .eq('class_name', class_name.toUpperCase())
             .eq('section', section)
             .eq('uniqueKey', uniqueKey);
-            
+
         if (existingError) {
             console.error('Error checking existing data in Supabase:', existingError.message);
             return fetchData();
@@ -149,7 +149,7 @@ export async function removeClass(uniqueKey, index, class_info, class_array) {
 
 //==============================================================================================================//
 //Helper function inside of ulit.js
-async function fetchData() {
+export async function fetchData() {
 
     let uniqueKey = setLocalStorage();
     // Fetch all rows with the given uniqueKey
