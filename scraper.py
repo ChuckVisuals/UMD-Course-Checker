@@ -95,13 +95,13 @@ def sendEmails():
             class_array.append(newclass)
     
     
+    server = smtplib.SMTP('smtp-mail.outlook.com', 587)
+    server.starttls()
+    server.login(email, password)
+    
     # Fetch all rows from the database table
     for classInfo in class_array:
         row = supabase.table('user_data').select('*').eq('uniqueKey', classInfo.key).execute()
-
-        server = smtplib.SMTP('smtp-mail.outlook.com', 587)
-        server.starttls()
-        server.login(email, password)
         
         # Reduce errors if user is not found etc
         if len(row.data) > 0:
@@ -111,7 +111,7 @@ def sendEmails():
             except Exception as e:
                 print("Error sending email:", e)
         
-        
+    server.quit()
 sendEmails()
 
 print("Done")
