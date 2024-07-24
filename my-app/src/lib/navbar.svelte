@@ -3,6 +3,7 @@
         setLocalStorage,
         add_class,
         checkOpenClasses,
+        fetchData,
     } from "$lib/utils.js";
     import { onMount } from "svelte";
     import { classData } from "$lib/store.js";
@@ -18,6 +19,7 @@
     $: openClasses = 0;
     onMount(async () => {
         openClasses = await checkOpenClasses(uniqueKey);
+        class_array = await fetchData();
     });
     console.log(checkOpenClasses(uniqueKey));
 </script>
@@ -115,17 +117,24 @@
 
                 <button
                     class="btn bg-indigo-500 hover:bg-indigo-700 text-lg"
-                    on:click={add_class(
-                        uniqueKey,
-                        class_name,
-                        section,
-                        class_array,
-                    ).then((data) => {
-                        classData.set(data);
-                        form_model = false;
-                        class_name = "";
-                        section = "";
-                    })}
+                    on:click={add_class(uniqueKey, class_name, section).then(
+                        (data) => {
+                            classData.set(data);
+                            if (data.length == class_array.length) {
+                                isError = true;
+                                setTimeout(() => {
+                                    isError = false;
+                                    console.log(
+                                        "isError set to false after 3 seconds",
+                                    );
+                                }, 3000);
+                            } else {
+                                form_model = false;
+                                class_name = "";
+                                section = "";
+                            }
+                        },
+                    )}
                 >
                     Submit
                 </button>
@@ -154,7 +163,7 @@
                             d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
                         /></svg
                     >
-                    <span>Error! Class Doesn't Exist</span>
+                    <span>Error! Class Doesn't Exist or Duplicate</span>
                 </div>
             {/if}
         </div>
