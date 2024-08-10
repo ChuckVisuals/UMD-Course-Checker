@@ -50,6 +50,9 @@ export async function add_class(uniqueKey, class_name, section) {
         let link = `https://api.umd.io/v1/courses/sections/${class_name}-${section}`;
         let response = await axios.get(link); //trying the link to make sure class is valid
 
+        let courseApiResponse = await axios.get(`https://umd-course-checker-api.vercel.app/getSeatCount?class_name=${class_name}&section_id=${section}`);
+        console.log(courseApiResponse.data)
+
         console.log(response.data);
 
         let apiData = response.data;
@@ -79,7 +82,7 @@ export async function add_class(uniqueKey, class_name, section) {
                 section: section,
                 api_link: link,
                 instructors: apiData[0].instructors.length > 0 ? apiData[0].instructors : ['TBA'],
-                open_seats: apiData[0].open_seats,
+                open_seats: courseApiResponse.data.open_seats,
             },
         ]);
 
