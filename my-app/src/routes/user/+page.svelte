@@ -50,7 +50,7 @@
     if (!user_found) {
       console.log("not found");
       try {
-        // Add the class_name and section to the Supabase table
+        // Add the email and user's name to the Supabase table
         const { data, error } = await supabase.from("user_data").insert([
           {
             uniqueKey: uniqueKey,
@@ -60,6 +60,33 @@
         ]);
         form_model = false;
         user_found = true;
+
+        //sends email to user thru the api call for init registration
+        try {
+          const response = await fetch(
+            "https://umd-course-checker-api.vercel.app/sendEmailOnRegistar",
+            {
+              method: "POST",
+              body: JSON.stringify({
+                email: email,
+                name: name,
+              }),
+              headers: {
+                "Content-type": "application/json; charset=UTF-8",
+              },
+            },
+          );
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          console.log(data);
+        } catch (error) {
+          console.error("Error:", error);
+        }
+
         if (error) {
           console.error("Error adding data to Supabase:", error.message);
         } else {
@@ -78,13 +105,16 @@
             .from("user_data")
             .update({ name: name, email: email })
             .eq("uniqueKey", uniqueKey);
-          console.log(data);
           form_model = false;
         }
       } catch (error) {
         console.error("Error fetching API links:", error.message);
       }
     }
+  }
+
+  async function handleClick() {
+    form_model = !form_model; // Update the state
   }
 </script>
 
@@ -129,12 +159,6 @@
       <div class="navbar-center hidden md:block">
         <a href="./" class="btn btn-ghost text-xl">UMD Course Checker</a>
       </div>
-
-      <button
-        class="btn btn-neutral md:hidden"
-        on:click={() => (form_model = !form_model)}
-        >Enter User Data
-      </button>
 
       <div class="navbar-end">
         <button
