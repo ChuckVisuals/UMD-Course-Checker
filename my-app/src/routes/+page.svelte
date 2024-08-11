@@ -17,6 +17,7 @@
   $: class_array; // Ensure reactivity
   let uniqueKey = setLocalStorage();
   let loading = true;
+  let loading2 = true;
   let showAlert = true;
 
   classData.subscribe((value) => {
@@ -37,16 +38,27 @@
     }
   }
 
-  onMount(fetchData);
+  //fetches the data from the db on page load
+  onMount(() => {
+    fetchData();
+    setTimeout(() => {
+      loading2 = false;
+    }, 200); // waits for 200ms for smoother loading
+    console.log("fetching data");
+  });
 
   console.log(class_array);
+
+  //Checks if the user exists in the db on page load
   onMount(() => {
     checkUserExists(uniqueKey).then((result) => {
       user_found = result;
       loading = false;
-      console.log(user_found);
+      console.log("fetching user");
     });
   });
+
+  //Shows alert on new page load
   onMount(() => {
     setTimeout(() => {
       showAlert = false;
@@ -55,7 +67,7 @@
 </script>
 
 <Navbar />
-{#if loading}
+{#if loading || loading2}
   <div
     class="flex items-center justify-center h-screen w-screen fixed top-0 left-0 place-items-center backdrop-blur-lg bg-black/20 z-20"
   >
