@@ -191,7 +191,7 @@
       <div class="my-20 mx-20 flex justify-center text-xl">
         <p>
           Enter in your email to get alerts on when your class will be open
-          above using the enter user data button Please note that using your
+          above using the enter user data button. Please note that using your
           terpmail will not work!!!
         </p>
       </div>
