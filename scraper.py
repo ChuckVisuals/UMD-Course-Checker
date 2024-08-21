@@ -5,6 +5,8 @@ from supabase import create_client, Client
 from dotenv import load_dotenv
 import smtplib
 from email.message import EmailMessage
+import time
+from random import randint
 
 #USED FOR LOCAL DEV ONLY
 load_dotenv()
@@ -81,7 +83,7 @@ def update_all_seats():
 update_all_seats()
 
 
-
+MAX_RETRIES = 5
 def sendEmails():
     class_array = []
     # Fetch all rows from the database table
@@ -95,23 +97,40 @@ def sendEmails():
             class_array.append(newclass)
     
     
-    server = smtplib.SMTP('smtp-mail.outlook.com', 587)
-    server.starttls()
-    server.login(email, password)
-    
-    # Fetch all rows from the database table
-    for classInfo in class_array:
-        row = supabase.table('user_data').select('*').eq('uniqueKey', classInfo.key).execute()
+    retries = 0
+    while retries < MAX_RETRIES:
         
-        # Reduce errors if user is not found etc
-        if len(row.data) > 0:
-            try:
-                print("sending")
-                server.sendmail(email, row.data[0]['email'].strip(), f"Subject: {classInfo.name} {classInfo.section} is now open!\n\nHello, {row.data[0]['name']}!\n\nThe class {classInfo.name} {classInfo.section} is now open! Go to testudo to register now!")
-            except Exception as e:
-                print("Error sending email:", e)
-        
-    server.quit()
+        #trys to send the email atleast 5 times
+        try:
+            server = smtplib.SMTP('smtp-mail.outlook.com', 587)
+            server.starttls()
+            server.login(email, password)
+            
+            # Fetch all rows from the database table
+            for classInfo in class_array:
+                row = supabase.table('user_data').select('*').eq('uniqueKey', classInfo.key).execute()
+                
+                # Reduce errors if user is not found etc
+                if len(row.data) > 0:
+                    try:
+                        print("sending")
+                        server.sendmail(email, row.data[0]['email'].strip(), f"Subject: {classInfo.name} {classInfo.section} is now open!\n\nHello, {row.data[0]['name']}!\n\nThe class {classInfo.name} {classInfo.section} is now open! Go to testudo to register now!")
+                    except Exception as e:
+                        print("Error sending email:", e)
+                
+            server.quit()
+            break
+        except smtplib.SMTPAuthenticationError as e:
+            print(f"SMTPAuthenticationError: {e}")
+            retries += 1
+            wait_time = 2 ** retries + randint(0, 1000) / 1000  # Exponential backoff with jitter
+            print(f"Retrying in {wait_time:.2f} seconds...")
+            time.sleep(wait_time)
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            break  # Exit the loop if an unexpected error occurs
+
+            
 sendEmails()
 
 print("Done")
