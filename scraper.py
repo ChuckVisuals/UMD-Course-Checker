@@ -92,7 +92,6 @@ def sendEmails():
     # Iterate through each row
     for row in rows.data:
         if row["open_seats"] != None and row["open_seats"] > 0 and row["sent"] == False:
-            supabase.table('data').update({'sent': True}).eq('uniqueKey', row['uniqueKey']).eq('class_name', row['class_name']).execute()
             newclass = ClassData(row['uniqueKey'],row["class_name"], row["section"], row["instructors"])
             class_array.append(newclass)
     
@@ -115,6 +114,7 @@ def sendEmails():
                     try:
                         print("sending")
                         server.sendmail(email, row.data[0]['email'].strip(), f"Subject: {classInfo.name} {classInfo.section} is now open!\n\nHello, {row.data[0]['name']}!\n\nThe class {classInfo.name} {classInfo.section} is now open! Go to testudo to register now!")
+                        supabase.table('data').update({'sent': True}).eq('uniqueKey', row['uniqueKey']).eq('class_name', row['class_name']).execute()
                     except Exception as e:
                         print("Error sending email:", e)
                 
