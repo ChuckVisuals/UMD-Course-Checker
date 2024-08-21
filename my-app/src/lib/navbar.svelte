@@ -7,6 +7,7 @@
     } from "$lib/utils.js";
     import { onMount } from "svelte";
     import { classData } from "$lib/store.js";
+    import Layout from "../routes/changelogs/+layout.svelte";
 
     //form inputs and variables
     let form_model = false;
@@ -17,9 +18,15 @@
     let class_array = [];
     let uniqueKey = setLocalStorage();
     $: openClasses = 0;
+    $: currentUrl = "";
+    $: pathname = "";
     onMount(async () => {
         openClasses = await checkOpenClasses(uniqueKey);
         class_array = await fetchData();
+        currentUrl = window.location.href;
+        const url = new URL(currentUrl);
+        pathname = url.pathname;
+        console.log(pathname);
     });
     console.log(checkOpenClasses(uniqueKey));
 </script>
@@ -56,41 +63,43 @@
     <div class="navbar-center hidden md:block">
         <a href="./" class="btn btn-ghost text-xl">UMD Course Checker</a>
     </div>
-
-    <button
-        class="btn btn-neutral md:hidden"
-        on:click={() => (form_model = !form_model)}
-        >Add another class
-    </button>
-
-    <div class="navbar-end">
+    {#if pathname == "/"}
         <button
-            class="btn btn-neutral hidden md:block"
+            class="btn btn-neutral md:hidden"
             on:click={() => (form_model = !form_model)}
             >Add another class
         </button>
-        <button class="btn btn-ghost btn-circle ml-4">
-            <div class="indicator">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    ><path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                    /></svg
-                >
-                {#if openClasses > 0}
-                    <span class="badge badge-xs badge-primary indicator-item"
-                    ></span>
-                {/if}
-            </div>
-        </button>
-    </div>
+
+        <div class="navbar-end">
+            <button
+                class="btn btn-neutral hidden md:block"
+                on:click={() => (form_model = !form_model)}
+                >Add another class
+            </button>
+            <button class="btn btn-ghost btn-circle ml-4">
+                <div class="indicator">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        ><path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                        /></svg
+                    >
+                    {#if openClasses > 0}
+                        <span
+                            class="badge badge-xs badge-primary indicator-item"
+                        ></span>
+                    {/if}
+                </div>
+            </button>
+        </div>
+    {/if}
 </div>
 
 {#if form_model}

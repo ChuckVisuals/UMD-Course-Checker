@@ -176,3 +176,7 @@
     >
   </div>
 {/if}
+
+<div class="absolute bottom-5 right-5">
+  <a class="link link-primary" href="/changelogs">View Change Logs Here!</a>
+</div>

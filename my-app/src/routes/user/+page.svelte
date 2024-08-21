@@ -156,6 +156,12 @@
         </div>
       </div>
 
+      <button
+        class="btn btn-neutral md:hidden"
+        on:click={() => (form_model = !form_model)}
+        >Enter User Data
+      </button>
+
       <div class="navbar-center hidden md:block">
         <a href="./" class="btn btn-ghost text-xl">UMD Course Checker</a>
       </div>
