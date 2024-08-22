@@ -115,6 +115,7 @@ def sendEmails():
                         print("sending")
                         server.sendmail(email, row.data[0]['email'].strip(), f"Subject: {classInfo.name} {classInfo.section} is now open!\n\nHello, {row.data[0]['name']}!\n\nThe class {classInfo.name} {classInfo.section} is now open! Go to testudo to register now!")
                         supabase.table('data').update({'sent': True}).eq('uniqueKey', row['uniqueKey']).eq('class_name', row['class_name']).execute()
+                        print("sent to " + row.data[0]['email'])
                     except Exception as e:
                         print("Error sending email:", e)
                 
