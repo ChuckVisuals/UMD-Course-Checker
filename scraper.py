@@ -80,7 +80,7 @@ def update_all_seats():
 
 
 # Call the function to update all seats
-update_all_seats()
+#update_all_seats()
 
 
 MAX_RETRIES = 5
@@ -95,7 +95,7 @@ def sendEmails():
             newclass = ClassData(row['uniqueKey'],row["class_name"], row["section"], row["instructors"])
             class_array.append(newclass)
     
-    
+    print(class_array)
     retries = 0
     while retries < MAX_RETRIES:
         
@@ -113,8 +113,10 @@ def sendEmails():
                 if len(row.data) > 0:
                     try:
                         print("sending")
-                        server.sendmail(email, row.data[0]['email'].strip(), f"Subject: {classInfo.name} {classInfo.section} is now open!\n\nHello, {row.data[0]['name']}!\n\nThe class {classInfo.name} {classInfo.section} is now open! Go to testudo to register now!")
-                        supabase.table('data').update({'sent': True}).eq('uniqueKey', row['uniqueKey']).eq('class_name', row['class_name']).execute()
+                        rowData = row.data[0]
+                        print(rowData)
+                        server.sendmail(email, rowData['email'], f"Subject: {classInfo.name} {classInfo.section} is now open!\n\nHello, {rowData['name']}!\n\nThe class {classInfo.name} {classInfo.section} is now open! Go to testudo to register now!")
+                        supabase.table('data').update({'sent': True}).eq('uniqueKey', rowData['uniqueKey']).eq('class_name', classInfo.name.upper()).execute()
                         print("sent to " + row.data[0]['email'])
                     except Exception as e:
                         print("Error sending email:", e)
