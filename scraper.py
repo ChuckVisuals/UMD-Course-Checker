@@ -25,7 +25,6 @@ email = "umdcoursechecker@outlook.com"
 supabase: Client = create_client(url, key)
 
 
-
 #Class for open class data
 class ClassData:
     def __init__(self, key, name, section, teacher):
